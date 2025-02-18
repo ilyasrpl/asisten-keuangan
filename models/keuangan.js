@@ -35,6 +35,16 @@ class Keuangan{
     })
     return res
   }
+
+  async getTransaction(date) {
+    this.client.connect();
+    let pengeluaranCollection = this.client.db(this.dbName).collection("pengeluaran");
+    let pemasukanCollection = this.client.db(this.dbName).collection("pemasukan");
+    let pengeluaranRes = await pengeluaranCollection.find({ time: { $lte: date } }).toArray();
+    let pemasukanRes = await pemasukanCollection.find({ time: { $lte: date } }).toArray();
+    let result = [...pengeluaranRes, ...pemasukanRes];
+    return result.map(v => ({_id : v._id.toString(), name: v.name, amount: v.amount, date: v.time.toString() }))
+  }
 }
 
 module.exports = Keuangan

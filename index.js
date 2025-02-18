@@ -26,8 +26,6 @@ async function main() {
     }
   })
 
-  console.log(functionDeclarations)
-
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash",
@@ -41,7 +39,6 @@ async function main() {
     const call = result.response.functionCalls();
   
     if (call) {
-      console.log(call)
       let messages = []
       for (const v of call) {
         const apiResponse = await functions[v.name](v.args);
@@ -51,13 +48,10 @@ async function main() {
             response: apiResponse,
           }
         })
-        console.log(apiResponse)
       }
-      console.log(messages)
 
-      const result2 = await chat.sendMessage(messages);
-  
-      console.log(result2.response.text());
+      const result2 = await chat.sendMessage(messages)
+      console.log(result2.response.text())
     }else{
       console.log(result.response.text())
     }

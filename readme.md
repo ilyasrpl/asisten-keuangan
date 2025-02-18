@@ -18,7 +18,7 @@ Asisten keuangan adalah sebuah proyek yang menggunakan teknologi kecerdasan buat
 
 Clone repo ini ke komputer Anda dengan menjalankan perintah berikut:
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/ilyasrpl/asisten-keuangan.git
 ```
 
 ### 2. Install Dependencies

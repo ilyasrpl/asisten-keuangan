@@ -42,16 +42,20 @@ async function main() {
     const call = result.response.functionCalls();
   
     if (call) {
-      const apiResponse = await functions[call[0].name](call[0].args);
-      console.log(apiResponse);
-      const result2 = await chat.sendMessage([
-        {
+      console.log(call)
+      let messages = []
+      await call.forEach(async v => {
+        const apiResponse = await functions[v.name](v.args);
+        messages.push({
           functionResponse: {
-            name: call[0].name,
+            name: v.name,
             response: apiResponse,
-          },
-        },
-      ]);
+          }
+        })
+      })
+      
+      console.log(messages);
+      const result2 = await chat.sendMessage(messages);
   
       console.log(result2.response.text());
     }else{

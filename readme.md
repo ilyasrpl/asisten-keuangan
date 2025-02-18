@@ -1,6 +1,6 @@
-# Gemini AI
+# Asisten keuangan
 
-Gemini AI adalah sebuah proyek yang menggunakan teknologi kecerdasan buatan (AI) untuk membantu pengguna dalam melakukan tugas-tugas tertentu.
+Asisten keuangan adalah sebuah proyek yang menggunakan teknologi kecerdasan buatan (AI) untuk membantu pengguna dalam melakukan tugas-tugas tertentu.
 
 ## Fitur
 

@@ -1,6 +1,6 @@
 let { GoogleGenerativeAI } = require("@google/generative-ai");
-let { getTime, getTimeDeclaration } = require("./tools/getTime");
-const { addExpense, addExpenseDeclaration } = require("./tools/addExpense");
+let { readdirSync } = require("fs");
+let { extname } = require("path");
 require('dotenv').config();
 
 const readline = require('readline');
@@ -10,21 +10,29 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-async function functionCalling() {
+async function main() {
+  const functions = {}
+  const functionDeclarations = []
 
-  const functions = {
-    getTime: () => {
-      return getTime(); 
-    },
-    addExpense: ({name, amount}) => {
-      return addExpense({name, amount})
+  let toolsDir = "./tools"
+  readdirSync(toolsDir).forEach(file => {
+    if(extname(file) == ".js"){
+      let module = require(toolsDir+"/"+file)
+      let obj = Object.keys(module);
+      obj.forEach(o => {
+        if(typeof module[o] == "object") functionDeclarations.push(module[o])
+          else functions[o] = module[o]
+      })
     }
-  };
+  })
+
+  console.log(functions)
+  console.log(functionDeclarations)
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-    tools: { functionDeclarations: [getTimeDeclaration, addExpenseDeclaration] },
+    tools: { functionDeclarations: functionDeclarations },
   });
   const chat = model.startChat();
 
@@ -56,4 +64,4 @@ async function functionCalling() {
   loop();
 }
 
-functionCalling();
+main();

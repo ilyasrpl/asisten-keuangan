@@ -1,3 +1,5 @@
+const Keuangan = require("../models/keuangan")
+
 const addExpenseDeclaration = {
   name: "addExpense",
   description: `Add an expense`,
@@ -17,12 +19,10 @@ const addExpenseDeclaration = {
   },
 }
 
-function addExpense({ name, amount }) {
-  // This mock API returns the requested lighting values
-  return {
-    name,
-    amount,
-  };
+async function addExpense({ name, amount }) {
+  let balance = new Keuangan();
+  let res = await balance.addExpense(name, amount);
+  return res
 }
 
 module.exports = { addExpenseDeclaration, addExpense }
